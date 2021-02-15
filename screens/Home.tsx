@@ -1,12 +1,11 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React from "react";
+import { Button, ThemeProvider } from "react-native-elements";
 
 export default function Home() {
-    return (
-        <View>
-            <Text>Hello</Text>
-        </View>
-    )
+  return (
+    <ThemeProvider>
+      <Button title="อัพโหลดแปลน" />
+      <Button title="รายการแปลน" />
+    </ThemeProvider>
+  );
 }
-
-const styles = StyleSheet.create({})
