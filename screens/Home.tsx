@@ -20,6 +20,8 @@ type Plan = {
   id: string;
   floor: string;
   plan_url: string;
+  create_at?: Date;
+  update_at?: Date;
 };
 
 const plans = [
