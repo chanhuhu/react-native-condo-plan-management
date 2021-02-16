@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { StackNavigationProp } from "@react-navigation/stack";
+import React from "react";
 import {
   ActivityIndicator,
   StyleSheet,
@@ -14,12 +15,15 @@ import {
   ListItem,
   SearchBar,
 } from "react-native-elements";
-import { useSearch, getFilterByFloor } from "../components/useSearch";
+import { RootStackParamList } from "../App";
+import { CameraPreview } from "../components/CameraPreview";
+import { useBoolean } from "../utils/useBoolean";
+import { getFilterByFloor, useSearch } from "../utils/useSearch";
 
 type Plan = {
   id: string;
   floor: string;
-  plan_url: string;
+  planURL: string;
   create_at?: Date;
   update_at?: Date;
 };
@@ -28,17 +32,30 @@ const plans = [
   {
     id: "1",
     floor: "ground",
-    plan_url: "https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg",
+    planURL: "https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg",
+  },
+  {
+    id: "2",
+    floor: "second floor",
+    planURL: "https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg",
+  },
+  {
+    id: "3",
+    floor: "thrid floor",
+    planURL: "https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg",
   },
 ];
 
-export default function Home() {
+type HomeNavigationProps = {
+  navigation: StackNavigationProp<RootStackParamList, "Home">;
+};
+
+export default function Home({ navigation }: HomeNavigationProps) {
   const { result, search, setSearch } = useSearch<Plan>(
     plans,
     getFilterByFloor
   );
-  const [isVisible, setIsVisible] = useState<boolean>(false);
-
+  const [isVisible, { on, off }] = useBoolean(false);
   const list = [
     { title: "อัพโหลด" },
     { title: "กล้อง" },
@@ -46,7 +63,7 @@ export default function Home() {
       title: "Cancel",
       containerStyle: { backgroundColor: "red" },
       titleStyle: { color: "white" },
-      onPress: () => setIsVisible(false),
+      onPress: () => off(),
     },
   ];
 
@@ -57,24 +74,32 @@ export default function Home() {
         value={search}
         onChangeText={(text) => setSearch(text)}
       />
-      <TouchableOpacity
-        activeOpacity={0.7}
-        onPress={() => console.log("hello")}
-      >
-        <Card>
-          {result.map((p, i) => {
-            return (
+      <CameraPreview />
+
+      {result.map((p, i) => {
+        return (
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() =>
+              navigation.navigate("Plan", {
+                planId: p.id,
+                planURL: p.planURL,
+                floor: p.floor,
+              })
+            }
+          >
+            <Card>
               <View key={i}>
                 <Image
-                  source={{ uri: p.plan_url }}
+                  source={{ uri: p.planURL }}
                   PlaceholderContent={<ActivityIndicator />}
                 />
                 <Text>ชั้น: {p.floor}</Text>
               </View>
-            );
-          })}
-        </Card>
-      </TouchableOpacity>
+            </Card>
+          </TouchableOpacity>
+        );
+      })}
       <TouchableOpacity activeOpacity={0.7} style={styles.fab}>
         <Icon
           name="add-outline"
@@ -82,7 +107,7 @@ export default function Home() {
           reverse
           style={styles.fab}
           onPress={() => {
-            setIsVisible(true);
+            on();
           }}
         />
       </TouchableOpacity>
