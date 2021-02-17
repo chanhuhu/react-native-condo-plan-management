@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
 import { Camera } from "expo-camera";
-import { Button } from "react-native-elements";
+import { Button, ListItem } from "react-native-elements";
+import { useBoolean } from "../utils/useBoolean";
 
-export function CameraPreview() {
+type Props = {
+  isCameraMode?: boolean;
+  title: string;
+};
+
+export function CameraPreview({ isCameraMode = false, title }: Props) {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
-  const [isCameraMode, setIsCameraMode] = useState(false);
   const [picture, setPicture] = useState("");
+  const [cameraMode, { on, off }] = useBoolean(isCameraMode);
 
   useEffect(() => {
     (async () => {
@@ -22,7 +28,7 @@ export function CameraPreview() {
   }
   if (picture) {
     return <Image style={styles.plan} source={{ uri: picture }} />;
-  } else if (isCameraMode) {
+  } else if (cameraMode) {
     return (
       <View style={styles.cameraContainer}>
         <Camera
@@ -32,16 +38,21 @@ export function CameraPreview() {
           }}
           type={Camera.Constants.Type.front}
           style={styles.camera}
-        ></Camera>
+        >
+          <Button title="Close" onPress={() => off()} />
+        </Camera>
       </View>
     );
   } else {
-    return <Button onPress={() => setIsCameraMode(true)} title="Take Photo" />;
+    return <ListItem.Title onPress={() => on()}>{title}</ListItem.Title>;
   }
 }
 
 const styles = StyleSheet.create({
   plan: { width: "100%", height: 360, marginBottom: 20 },
   cameraContainer: { width: "100%", height: 400, marginBottom: 20 },
-  camera: { width: "100%", height: 360 },
+  camera: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
+  },
 });

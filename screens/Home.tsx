@@ -56,16 +56,6 @@ export default function Home({ navigation }: HomeNavigationProps) {
     getFilterByFloor
   );
   const [isVisible, { on, off }] = useBoolean(false);
-  const list = [
-    { title: "อัพโหลด" },
-    { title: "กล้อง" },
-    {
-      title: "Cancel",
-      containerStyle: { backgroundColor: "red" },
-      titleStyle: { color: "white" },
-      onPress: () => off(),
-    },
-  ];
 
   return (
     <View style={styles.container}>
@@ -74,7 +64,6 @@ export default function Home({ navigation }: HomeNavigationProps) {
         value={search}
         onChangeText={(text) => setSearch(text)}
       />
-      <CameraPreview />
 
       {result.map((p, i) => {
         return (
@@ -115,17 +104,19 @@ export default function Home({ navigation }: HomeNavigationProps) {
         isVisible={isVisible}
         modalProps={{ animationType: "slide" }}
       >
-        {list.map((l, i) => (
-          <ListItem
-            key={i}
-            containerStyle={l.containerStyle}
-            onPress={l.onPress}
-          >
-            <ListItem.Content>
-              <ListItem.Title style={l.titleStyle}>{l.title}</ListItem.Title>
-            </ListItem.Content>
-          </ListItem>
-        ))}
+        <ListItem>
+          <ListItem.Content>
+            <CameraPreview title="กล้อง" />
+          </ListItem.Content>
+          <ListItem.Content>
+            <ListItem.Title onPress={() => console.log("ไฟล์")}>
+              ไฟล์
+            </ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Content>
+            <ListItem.Title onPress={() => off()}>ปิด</ListItem.Title>
+          </ListItem.Content>
+        </ListItem>
       </BottomSheet>
     </View>
   );
