@@ -32,17 +32,20 @@ const plans = [
   {
     id: "1",
     floor: "ground",
-    planURL: "https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg",
+    planURL:
+      "https://vacationresortsrus.com/wp-content/uploads/2012/10/Smugglers-floorplan-2BR-150x150.png",
   },
   {
     id: "2",
     floor: "second floor",
-    planURL: "https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg",
+    planURL:
+      "https://vacationresortsrus.com/wp-content/uploads/2012/10/Smugglers-floorplan-2BR-150x150.png",
   },
   {
     id: "3",
     floor: "thrid floor",
-    planURL: "https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg",
+    planURL:
+      "https://vacationresortsrus.com/wp-content/uploads/2012/10/Smugglers-floorplan-2BR-150x150.png",
   },
 ];
 
