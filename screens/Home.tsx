@@ -59,64 +59,71 @@ export default function Home({ navigation }: HomeNavigationProps) {
 
   return (
     <>
-      <ScrollView style={styles.container}>
-        <SearchBar
-          placeholder="Search plan"
-          value={search}
-          onChangeText={(text) => setSearch(text)}
-        />
+      {!isCameraMode && (
+        <View style={styles.container}>
+          <SearchBar
+            placeholder="Search plan"
+            value={search}
+            onChangeText={(text) => setSearch(text)}
+          />
 
-        {result.map((p, i) => {
-          return (
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={() =>
-                navigation.navigate("Plan", {
-                  planId: p.id,
-                  planURL: p.planURL,
-                  floor: p.floor,
-                })
-              }
-            >
-              <Card>
-                <View key={i}>
-                  <Image
-                    style={styles.image}
-                    source={{ uri: p.planURL }}
-                    PlaceholderContent={<ActivityIndicator />}
-                  />
-                  <Text>ชั้น: {p.floor}</Text>
-                </View>
-              </Card>
-            </TouchableOpacity>
-          );
-        })}
-        <FAB name="add-outline" type="ionicon" onPress={() => on()} />
-        <BottomSheet
-          isVisible={isVisible}
-          modalProps={{ animationType: "slide" }}
-        >
-          <ListItem key={"1"}>
-            <ListItem.Content>
-              <ListItem.Title onPress={() => cameraModeOn()}>
-                กล้อง
-              </ListItem.Title>
-            </ListItem.Content>
-            <ListItem.Content>
-              <ListItem.Title onPress={() => console.log("ไฟล์")}>
-                ไฟล์
-              </ListItem.Title>
-            </ListItem.Content>
-            <ListItem.Content>
-              <ListItem.Title onPress={() => off()}>ปิด</ListItem.Title>
-            </ListItem.Content>
-          </ListItem>
-        </BottomSheet>
-        <CameraPreview
-          changeCameraMode={() => cameraModeOff()}
-          isCameraMode={isCameraMode}
-        />
-      </ScrollView>
+          {result.map((p, i) => {
+            return (
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() =>
+                  navigation.navigate("Plan", {
+                    planId: p.id,
+                    planURL: p.planURL,
+                    floor: p.floor,
+                  })
+                }
+              >
+                <Card>
+                  <View key={i}>
+                    <Image
+                      style={styles.image}
+                      source={{ uri: p.planURL }}
+                      PlaceholderContent={<ActivityIndicator />}
+                    />
+                    <Text>ชั้น: {p.floor}</Text>
+                  </View>
+                </Card>
+              </TouchableOpacity>
+            );
+          })}
+          <FAB name="add-outline" type="ionicon" onPress={() => on()} />
+          <BottomSheet
+            isVisible={isVisible}
+            modalProps={{ animationType: "slide" }}
+          >
+            <ListItem key={"1"}>
+              <ListItem.Content>
+                <ListItem.Title onPress={() => cameraModeOn()}>
+                  กล้อง
+                </ListItem.Title>
+              </ListItem.Content>
+              <ListItem.Content>
+                <ListItem.Title onPress={() => console.log("ไฟล์")}>
+                  ไฟล์
+                </ListItem.Title>
+              </ListItem.Content>
+              <ListItem.Content>
+                <ListItem.Title onPress={() => off()}>ปิด</ListItem.Title>
+              </ListItem.Content>
+            </ListItem>
+          </BottomSheet>
+        </View>
+      )}
+      {isCameraMode && (
+        <View style={styles.cameraContainer}>
+          <CameraPreview
+            changeCameraModeOff={() => cameraModeOff()}
+            isCameraMode={isCameraMode}
+          />
+          {console.log(isCameraMode)}
+        </View>
+      )}
     </>
   );
 }
@@ -124,9 +131,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    position: "relative",
+    backgroundColor: "red",
   },
-
+  cameraContainer: {
+    flex: 1,
+  },
   image: {
     justifyContent: "center",
     alignItems: "center",

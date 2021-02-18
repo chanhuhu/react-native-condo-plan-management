@@ -8,19 +8,14 @@ type Props = React.ComponentProps<typeof Icon> & {
 };
 
 export function FAB({ children, ...props }: Props) {
-  return (
-    <TouchableOpacity activeOpacity={0.7}>
-      <Icon style={styles.fab} reverse {...props} />
-      {children}
-    </TouchableOpacity>
-  );
+  return <Icon style={styles.fab} reverse {...props} />;
 }
 
 const styles = StyleSheet.create({
   fab: {
     position: "absolute",
     margin: 16,
-    right: 25,
-    bottom: 25,
+    right: 0,
+    bottom: 0,
   },
 });
