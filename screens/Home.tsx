@@ -18,6 +18,7 @@ import {
 import { RootStackParamList } from "../App";
 import { CameraPreview } from "../components/CameraPreview";
 import { FAB } from "../components/FAB";
+import ImagesPicker from "../components/ImagesPicker";
 import { useBoolean } from "../utils/useBoolean";
 import { getFilterByFloor, useSearch } from "../utils/useSearch";
 
@@ -54,12 +55,15 @@ export default function Home({ navigation }: HomeNavigationProps) {
   const [isCameraMode, { on: cameraModeOn, off: cameraModeOff }] = useBoolean(
     false
   );
-
+  const [
+    isImagesPicker,
+    { on: imagesPickerOn, off: imagesPickerOff },
+  ] = useBoolean(false);
   //#endregion
 
   return (
     <>
-      {!isCameraMode && (
+      {!isCameraMode && !isImagesPicker && (
         <View style={styles.container}>
           <SearchBar
             placeholder="Search plan"
@@ -104,7 +108,7 @@ export default function Home({ navigation }: HomeNavigationProps) {
                 </ListItem.Title>
               </ListItem.Content>
               <ListItem.Content>
-                <ListItem.Title onPress={() => console.log("ไฟล์")}>
+                <ListItem.Title onPress={() => imagesPickerOn()}>
                   ไฟล์
                 </ListItem.Title>
               </ListItem.Content>
@@ -117,11 +121,12 @@ export default function Home({ navigation }: HomeNavigationProps) {
       )}
       {isCameraMode && (
         <View style={styles.cameraContainer}>
-          <CameraPreview
-            changeCameraModeOff={() => cameraModeOff()}
-            isCameraMode={isCameraMode}
-          />
-          {console.log(isCameraMode)}
+          <CameraPreview changeCameraModeOff={() => cameraModeOff()} />
+        </View>
+      )}
+      {isImagesPicker && (
+        <View style={styles.cameraContainer}>
+          <ImagesPicker></ImagesPicker>
         </View>
       )}
     </>

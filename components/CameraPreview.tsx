@@ -11,10 +11,9 @@ import { Icon, Image } from "react-native-elements";
 
 type Props = {
   changeCameraModeOff: () => void;
-  isCameraMode: boolean;
 };
 
-export function CameraPreview({ changeCameraModeOff, isCameraMode }: Props) {
+export function CameraPreview({ changeCameraModeOff }: Props) {
   //#region state
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
@@ -33,6 +32,8 @@ export function CameraPreview({ changeCameraModeOff, isCameraMode }: Props) {
   const snap = async () => {
     if (cameraRef) {
       let photo = await cameraRef.current?.takePictureAsync();
+      console.log(photo);
+
       setPicture(photo?.uri || "");
     }
   };
@@ -73,7 +74,7 @@ export function CameraPreview({ changeCameraModeOff, isCameraMode }: Props) {
                   name="camera-outline"
                   type="ionicon"
                   reverse
-                  onPress={() => snap()}
+                  onPress={async () => await snap()}
                 />
               </TouchableOpacity>
               <TouchableOpacity style={styles.button}>

@@ -4,11 +4,13 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Home from "./screens/Home";
+import ImageEditor from "./screens/ImageEditor";
 import Plan from "./screens/Plan";
 
 export type RootStackParamList = {
   Home: undefined;
   Plan: { planId: string; planURL: string; floor: string };
+  ImageEditor: undefined;
 };
 
 const RootStack = createStackNavigator<RootStackParamList>();
@@ -20,6 +22,7 @@ export default function App() {
         <RootStack.Navigator initialRouteName="Home">
           <RootStack.Screen name="Home" component={Home} />
           <RootStack.Screen name="Plan" component={Plan} />
+          <RootStack.Screen name="ImageEditor" component={ImageEditor} />
         </RootStack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
