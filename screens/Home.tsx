@@ -1,5 +1,5 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import React from "react";
+import React, { useState } from "react";
 import {
   ActivityIndicator,
   ScrollView,
@@ -51,7 +51,12 @@ export default function Home({ navigation }: HomeNavigationProps) {
     getFilterByFloor
   );
   const [isVisible, { on, off }] = useBoolean(false);
+  const [isCameraMode, { on: cameraModeOn, off: cameraModeOff }] = useBoolean(
+    false
+  );
+
   //#endregion
+
   return (
     <>
       <ScrollView style={styles.container}>
@@ -93,7 +98,9 @@ export default function Home({ navigation }: HomeNavigationProps) {
         >
           <ListItem key={"1"}>
             <ListItem.Content>
-              <CameraPreview title="กล้อง" onPress={() => off()} />
+              <ListItem.Title onPress={() => cameraModeOn()}>
+                กล้อง
+              </ListItem.Title>
             </ListItem.Content>
             <ListItem.Content>
               <ListItem.Title onPress={() => console.log("ไฟล์")}>
@@ -105,6 +112,10 @@ export default function Home({ navigation }: HomeNavigationProps) {
             </ListItem.Content>
           </ListItem>
         </BottomSheet>
+        <CameraPreview
+          changeCameraMode={() => cameraModeOff()}
+          isCameraMode={isCameraMode}
+        />
       </ScrollView>
     </>
   );

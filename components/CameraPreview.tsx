@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
 import { Camera } from "expo-camera";
-import { Button, ListItem } from "react-native-elements";
 import { useBoolean } from "../utils/useBoolean";
+import { Button, Icon } from "react-native-elements";
 
 type Props = {
-  isCameraMode?: boolean;
-  title: string;
-  onPress: () => void;
+  changeCameraMode: () => void;
+  isCameraMode: boolean;
 };
 
-export function CameraPreview({ isCameraMode = false, title, onPress }: Props) {
+export function CameraPreview({ changeCameraMode, isCameraMode }: Props) {
   //#region state
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [picture, setPicture] = useState("");
-  const [cameraMode, { on, off }] = useBoolean(isCameraMode);
+  // cameraModeOn(on);
   //#endregion
 
   //#region useEffect
@@ -26,56 +31,75 @@ export function CameraPreview({ isCameraMode = false, title, onPress }: Props) {
   }, []);
   //#endregion
 
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
+  }, []);
+
   if (hasPermission === null) {
     return <View />;
-  } else if (hasPermission === false) {
+  }
+  if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
-  if (picture) {
-    return <Image style={styles.plan} source={{ uri: picture }} />;
-  } else if (cameraMode) {
-    return (
-      <>
-        <Camera
-          ref={(ref) => {
-            // @ts-ignore
-            this.camera = ref;
-          }}
-          type={Camera.Constants.Type.front}
-          style={styles.camera}
-        >
-          <View style={styles.cameraToolsContainer}>
-            <Button title="Close" onPress={() => off()} />
-            <Button title="Snap" onPress={() => console.log("cheese")} />
-          </View>
-        </Camera>
-      </>
-    );
-  } else {
-    return (
-      <ListItem.Title
-        onPress={() => {
-          onPress;
-          on();
-        }}
-      >
-        {title}
-      </ListItem.Title>
-    );
+  {
+    if (isCameraMode) {
+      return (
+        <View style={styles.container}>
+          <Camera style={styles.camera} type={Camera.Constants.Type.front}>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.button}>
+                <Icon name="camera-reverse-outline" type="ionicon" reverse />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button}>
+                <Icon name="camera-outline" type="ionicon" reverse />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button}>
+                <Icon
+                  name="close-outline"
+                  type="ionicon"
+                  reverse
+                  onPress={() => changeCameraMode()}
+                />
+              </TouchableOpacity>
+            </View>
+          </Camera>
+        </View>
+      );
+    } else {
+      return <View />;
+    }
   }
 }
 
 const styles = StyleSheet.create({
-  plan: { width: "100%", height: 360, marginBottom: 20 },
-  cameraToolsContainer: {
-    width: "100%",
-    height: 400,
-    marginBottom: 20,
+  container: {
     flex: 1,
-    alignItems: "flex-end",
   },
   camera: {
+    flex: 1,
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
+    backgroundColor: "black",
+    flexDirection: "column",
+    justifyContent: "flex-end",
+  },
+  buttonContainer: {
+    flex: 0.1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  button: {
+    flex: 1,
+    backgroundColor: "grey",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  text: {
+    fontSize: 18,
+    color: "white",
   },
 });
