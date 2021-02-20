@@ -1,8 +1,7 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import React, { useState } from "react";
+import React from "react";
 import {
   ActivityIndicator,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -19,8 +18,7 @@ import { RootStackParamList } from "../App";
 import { CameraPreview } from "../components/CameraPreview";
 import { FAB } from "../components/FAB";
 import ImagesPicker from "../components/ImagesPicker";
-import { useBoolean } from "../utils/useBoolean";
-import { getFilterByFloor, useSearch } from "../utils/useSearch";
+import { useBoolean, useSearch, getFilterByFloor } from "../utils";
 
 type Plan = {
   id: string;
