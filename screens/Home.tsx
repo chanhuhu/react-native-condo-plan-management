@@ -14,17 +14,10 @@ import {
   ListItem,
   SearchBar,
 } from "react-native-elements";
-import { RootStackParamList } from "../App";
+import { RootNavigatorParamsList } from "../types";
 import { CameraPreview, FAB, ImagesPicker } from "../components";
 import { getFilterByFloor, useBoolean, useSearch } from "../utils";
-
-type Plan = {
-  id: string;
-  floor: string;
-  planURL: string;
-  create_at?: Date;
-  update_at?: Date;
-};
+import { PlanParams } from "../types";
 
 //#region mock data
 const plans = [
@@ -38,12 +31,12 @@ const plans = [
 //#endregion
 
 type HomeNavigationProps = {
-  navigation: StackNavigationProp<RootStackParamList, "Home">;
+  navigation: StackNavigationProp<RootNavigatorParamsList, "Home">;
 };
 
 export default function Home({ navigation }: HomeNavigationProps) {
   //#region state
-  const { result, search, setSearch } = useSearch<Plan>(
+  const { result, search, setSearch } = useSearch<PlanParams>(
     plans,
     getFilterByFloor
   );
@@ -73,7 +66,7 @@ export default function Home({ navigation }: HomeNavigationProps) {
                 activeOpacity={0.7}
                 onPress={() =>
                   navigation.navigate("Plan", {
-                    planId: p.id,
+                    id: p.id,
                     planURL: p.planURL,
                     floor: p.floor,
                   })

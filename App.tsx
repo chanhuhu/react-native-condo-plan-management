@@ -1,39 +1,14 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-import { StyleSheet } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import Home from "./screens/Home";
-import ImageEditor from "./screens/ImageEditor";
-import Plan from "./screens/Plan";
-
-export type RootStackParamList = {
-  Home: undefined;
-  Plan: { planId: string; planURL: string; floor: string };
-  ImageEditor: undefined;
-};
-
-const RootStack = createStackNavigator<RootStackParamList>();
+import RootNavigator from "./navigation/Navigator";
 
 export default function App() {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <RootStack.Navigator initialRouteName="Home">
-          <RootStack.Screen name="Home" component={Home} />
-          <RootStack.Screen name="Plan" component={Plan} />
-          <RootStack.Screen name="ImageEditor" component={ImageEditor} />
-        </RootStack.Navigator>
+        <RootNavigator />
       </NavigationContainer>
     </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
