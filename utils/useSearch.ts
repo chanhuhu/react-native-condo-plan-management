@@ -13,12 +13,13 @@ export const useSearch = <T>(
   };
 };
 
-export const getFilterByFloor = (text: string) => <T extends { floor: string }>(
+const getFilterByFloor = (text: string) => <T extends { floor: string }>(
   item: T
 ) => item.floor.toLowerCase().includes(text.toLowerCase());
 
-export const getFilterById = (text: string) => <
-  T extends { id: string | number }
->(
+const getFilterById = (text: string) => <T extends { id: string | number }>(
   item: T
 ) => item.id.toString().toLowerCase().includes(text.toLowerCase());
+
+export default useSearch;
+export { getFilterByFloor, getFilterById };

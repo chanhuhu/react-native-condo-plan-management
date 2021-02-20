@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 
-export const useBoolean = (defaultValue: boolean) => {
+const useBoolean = (defaultValue: boolean) => {
   const [value, setValue] = useState(defaultValue);
 
   const setters = useMemo(
@@ -20,3 +20,5 @@ export const useBoolean = (defaultValue: boolean) => {
 
   return [value, setters] as const;
 };
+
+export default useBoolean;
