@@ -13,7 +13,7 @@ type Props = {
   changeCameraModeOff: () => void;
 };
 
-export function CameraPreview({ changeCameraModeOff }: Props) {
+export default function CameraPreview({ changeCameraModeOff }: Props) {
   //#region state
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [type, setType] = useState(Camera.Constants.Type.back);

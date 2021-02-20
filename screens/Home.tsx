@@ -15,10 +15,8 @@ import {
   SearchBar,
 } from "react-native-elements";
 import { RootStackParamList } from "../App";
-import { CameraPreview } from "../components/CameraPreview";
-import { FAB } from "../components/FAB";
-import ImagesPicker from "../components/ImagesPicker";
-import { useBoolean, useSearch, getFilterByFloor } from "../utils";
+import { CameraPreview, FAB, ImagesPicker } from "../components";
+import { getFilterByFloor, useBoolean, useSearch } from "../utils";
 
 type Plan = {
   id: string;

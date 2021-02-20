@@ -1,13 +1,12 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { Icon } from "react-native-elements";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 type Props = React.ComponentProps<typeof Icon> & {
   children?: React.ReactNode;
 };
 
-export function FAB({ children, ...props }: Props) {
+export default function FAB({ children, ...props }: Props) {
   return <Icon style={styles.fab} reverse {...props} />;
 }
 
