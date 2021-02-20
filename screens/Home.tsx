@@ -50,6 +50,20 @@ export default function Home({ navigation }: HomeNavigationProps) {
   ] = useBoolean(false);
   //#endregion
 
+  //#region bottom sheet list
+  const bottomSheetList = [
+    {
+      title: "กล้อง",
+      onPress: async () => {
+        await off();
+        await cameraModeOn();
+      },
+    },
+    { title: "ไฟล์", onPress: () => imagesPickerOn() },
+    { title: "ปิด", onPress: () => off() },
+  ];
+  //#endregion
+
   return (
     <>
       {!isCameraMode && !isImagesPicker && (
@@ -90,21 +104,13 @@ export default function Home({ navigation }: HomeNavigationProps) {
             isVisible={isVisible}
             modalProps={{ animationType: "slide" }}
           >
-            <ListItem key={"1"}>
-              <ListItem.Content>
-                <ListItem.Title onPress={() => cameraModeOn()}>
-                  กล้อง
-                </ListItem.Title>
-              </ListItem.Content>
-              <ListItem.Content>
-                <ListItem.Title onPress={() => imagesPickerOn()}>
-                  ไฟล์
-                </ListItem.Title>
-              </ListItem.Content>
-              <ListItem.Content>
-                <ListItem.Title onPress={() => off()}>ปิด</ListItem.Title>
-              </ListItem.Content>
-            </ListItem>
+            {bottomSheetList.map((i) => {
+              <ListItem key={i.title}>
+                <ListItem.Content>
+                  <ListItem.Title onPress={i.onPress}>{i.title}</ListItem.Title>
+                </ListItem.Content>
+              </ListItem>;
+            })}
           </BottomSheet>
         </View>
       )}
