@@ -16,7 +16,7 @@ type Props = {
 export default function CameraPreview({ changeCameraModeOff }: Props) {
   //#region state
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
-  const [type, setType] = useState(Camera.Constants.Type.back);
+  const [type, setType] = useState(Camera.Constants.Type.front);
   const [picture, setPicture] = useState("");
   const cameraRef = useRef<Camera>(null);
   //#endregion
@@ -51,7 +51,7 @@ export default function CameraPreview({ changeCameraModeOff }: Props) {
         <View style={styles.container}>
           <Camera
             style={styles.camera}
-            type={Camera.Constants.Type.front}
+            type={Camera.Constants.Type.back}
             ref={cameraRef}
           >
             <View style={styles.buttonContainer}>
@@ -99,6 +99,8 @@ export default function CameraPreview({ changeCameraModeOff }: Props) {
   }
 }
 
+const width = Dimensions.get("window").width;
+const height = Dimensions.get("window").height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -128,11 +130,11 @@ const styles = StyleSheet.create({
     color: "white",
   },
   imageContainer: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    width: width,
+    height: height,
   },
   image: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    width: width,
+    height: height,
   },
 });

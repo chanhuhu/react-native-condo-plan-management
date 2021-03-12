@@ -7,17 +7,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import {
-  BottomSheet,
-  Card,
-  Image,
-  ListItem,
-  SearchBar,
-} from "react-native-elements";
-import { RootNavigatorParamsList } from "../types";
-import { CameraPreview, FAB, ImagesPicker } from "../components";
+import { Card, Image, SearchBar } from "react-native-elements";
+import { CameraPreview, FAB } from "../components";
+import { PlanParams, RootNavigatorParamsList } from "../types";
 import { getFilterByFloor, useBoolean, useSearch } from "../utils";
-import { PlanParams } from "../types";
 
 //#region mock data
 const plans = [
@@ -40,35 +33,17 @@ export default function Home({ navigation }: HomeNavigationProps) {
     plans,
     getFilterByFloor
   );
-  const [isVisible, { on, off }] = useBoolean(false);
   const [isCameraMode, { on: cameraModeOn, off: cameraModeOff }] = useBoolean(
     false
   );
-  const [
-    isImagesPicker,
-    { on: imagesPickerOn, off: imagesPickerOff },
-  ] = useBoolean(false);
-  //#endregion
-
-  //#region bottom sheet list
-  const bottomSheetList = [
-    {
-      title: "กล้อง",
-      onPress: async () => {
-        await off();
-        await cameraModeOn();
-      },
-    },
-    { title: "ไฟล์", onPress: () => imagesPickerOn() },
-    { title: "ปิด", onPress: () => off() },
-  ];
   //#endregion
 
   return (
     <>
-      {!isCameraMode && !isImagesPicker && (
+      {!isCameraMode && (
         <View style={styles.container}>
           <SearchBar
+            lightTheme={true}
             placeholder="Search plan"
             value={search}
             onChangeText={(text) => setSearch(text)}
@@ -77,6 +52,7 @@ export default function Home({ navigation }: HomeNavigationProps) {
           {result.map((p, i) => {
             return (
               <TouchableOpacity
+                key={i}
                 activeOpacity={0.7}
                 onPress={() =>
                   navigation.navigate("Plan", {
@@ -87,41 +63,28 @@ export default function Home({ navigation }: HomeNavigationProps) {
                 }
               >
                 <Card>
-                  <View key={i}>
-                    <Image
-                      style={styles.image}
-                      source={{ uri: p.planURL }}
-                      PlaceholderContent={<ActivityIndicator />}
-                    />
-                    <Text>ชั้น: {p.floor}</Text>
-                  </View>
+                  <Image
+                    style={styles.image}
+                    source={{ uri: p.planURL }}
+                    PlaceholderContent={<ActivityIndicator />}
+                  />
+                  <Text>ชั้น: {p.floor}</Text>
                 </Card>
               </TouchableOpacity>
             );
           })}
-          <FAB name="add-outline" type="ionicon" onPress={() => on()} />
-          <BottomSheet
-            isVisible={isVisible}
-            modalProps={{ animationType: "slide" }}
-          >
-            {bottomSheetList.map((i) => {
-              <ListItem key={i.title}>
-                <ListItem.Content>
-                  <ListItem.Title onPress={i.onPress}>{i.title}</ListItem.Title>
-                </ListItem.Content>
-              </ListItem>;
-            })}
-          </BottomSheet>
+          <View style={styles.fab}>
+            <FAB
+              name="add-outline"
+              type="ionicon"
+              onPress={() => cameraModeOn()}
+            />
+          </View>
         </View>
       )}
       {isCameraMode && (
         <View style={styles.cameraContainer}>
           <CameraPreview changeCameraModeOff={() => cameraModeOff()} />
-        </View>
-      )}
-      {isImagesPicker && (
-        <View style={styles.cameraContainer}>
-          <ImagesPicker></ImagesPicker>
         </View>
       )}
     </>
@@ -131,7 +94,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor: "red",
   },
   cameraContainer: {
     flex: 1,
@@ -141,5 +103,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 200,
     height: 200,
+  },
+  fab: {
+    position: "absolute",
+    margin: 16,
+    right: 0,
+    bottom: 0,
   },
 });

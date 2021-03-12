@@ -1,5 +1,5 @@
 import Home from "./Home";
 import Plan from "./Plan";
-import ImageEditor from "./ImageEditor";
+import Project from "./Project";
 
-export { Home, Plan, ImageEditor };
+export { Home, Plan, Project };

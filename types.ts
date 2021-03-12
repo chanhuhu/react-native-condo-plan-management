@@ -9,5 +9,5 @@ export type PlanParams = {
 export type RootNavigatorParamsList = {
   Home: undefined;
   Plan: PlanParams;
-  ImageEditor: undefined;
+  Project: undefined;
 };
