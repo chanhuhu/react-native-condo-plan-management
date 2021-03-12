@@ -49,11 +49,7 @@ export default function CameraPreview({ changeCameraModeOff }: Props) {
     if (!picture) {
       return (
         <View style={styles.container}>
-          <Camera
-            style={styles.camera}
-            type={Camera.Constants.Type.back}
-            ref={cameraRef}
-          >
+          <Camera style={styles.camera} type={type} ref={cameraRef}>
             <View style={styles.buttonContainer}>
               <TouchableOpacity style={styles.button}>
                 <Icon
